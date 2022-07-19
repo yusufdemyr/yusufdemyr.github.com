@@ -11,7 +11,7 @@ email:
 description: >
     The crazy thing is that they are all just like me. wild.
 baseurl: ""
-url: "http://yusufdemyr.github.io"
+url: "http://yusufdemyr.github.io/index.html"
 permalink: /blog/:title
 github_username: yusufdemyr
 
