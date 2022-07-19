@@ -1,8 +1,9 @@
 ---
-# layout: forward
+
+[comment]: #layout: forward
 layout: page
 title: "Works"
-#target: https://github.com/yusufdemyr?tab=repositories
+[comment]: #target: https://github.com/yusufdemyr?tab=repositories
 ---
 
 {{ site.time | date:'%B %d, %Y' }} 
