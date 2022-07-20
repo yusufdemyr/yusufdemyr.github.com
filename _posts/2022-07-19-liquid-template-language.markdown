@@ -7,9 +7,77 @@ variable: 2
 ---
 <style>
     .red {color: red}
-</style>
+    .btn{ width: 170px;
+       height: 40px;
+      
+       color:blue;
+       border: 2px solid #000;
+       font-family: 'Lato', sans-serif;
+       font-weight: 500;
+       background: transparent;
+       cursor: pointer;
+       transition: all 0.3s ease;
+       position: relative;
+       display: inline-block;
+       
+       line-height: 39px; 
+       padding: 0;
+    }
+    .btn:hover{background: transparent;color: #000;text-decoration: none !important;}
+    .btn span{position: relative;
+       display: block;
+       width: 100%;
+       height: 100%;}
+    .btn:before,
+    .btn:after {
+      position: absolute;
+      content: "";
+      left: 0;
+      top: 0;
+      background: #000;
+      transition: all 0.3s ease;
+    }
+    .btn:before {
+      height: 0%;
+      width: 2px;
+    }
+    .btn:after {
+      width: 0%;
+      height: 2px;
+    }
+    .btn:hover:before {
+      height: 100%;
+    }
+    .btn:hover:after {
+      width: 100%;
+    }
+    .btn span:before,
+    .btn span:after {
+      position: absolute;
+      content: "";
+      right: 0;
+      bottom: 0;
+      background: #000;
+      transition: all 0.3s ease;
+    }
+    .btn span:before {
+      width: 2px;
+      height: 0%;
+    }
+    .btn span:after {
+      width: 0%;
+      height: 2px;
+    }
+    .btn span:hover:before {
+      height: 100%;
+    }
+    .btn span:hover:after {
+      width: 100%;
+    }
 
-[you can find source here](https://shopify.dev/api/liquid)
+</style>
+<a class="btn" href="https://shopify.dev/api/liquid">you can find source here</a>
+
 
 ### What is a template language?
 <li> A template language allows you to create a single template to host static content, and dynamically insert information depending on where the template is rendered.</li>
@@ -38,10 +106,11 @@ OUTPUT<br>
 {% if page.description %}
     <meta name="description" content="{{page.description | escape}}">
 {% endif %}
+<a class="btn" href="#basics">Navigate to Basics</a>
 
 ### Defining logic with tags
 <li>Liquid tags are used to define logic that tells templates what to do. Text within tag delimiters doesn't produce visible output when the webpage is rendered.</li>
-{% raw %} {% %} {% endraw %} -> Curly brace percentage delimiters denote logic and control flow.
+<code>{% raw %} {% %} {% endraw %} -> Curly brace percentage delimiters denote logic and control flow.</code>
     {% raw %}
     {% if product.title == 'Health potion' %}
     This is a rare potion. Use it sparingly!
@@ -56,7 +125,75 @@ So the output is:
     {% else %}
     This is not a rare potion. Trash!
     {% endif %}
+<a class="btn" href="#tags">Navigate to Tags</a>
 
+### Modifying output with filters
+<li> Liquid filters are used to modify the output of variables and objects. To apply filters to an output, add the filter and any filter parameters within the output's curly brace delimiters, preceded by a pipe character.</li>
+<li> Multiple filters can be used on one output. They're parsed from left to right.</li><br>
+<code><b>{% raw %}{{ | }}{% endraw %} -></b> Filters are placed within an output tag and denoted by a pipe character.</code>
+    {% raw %}
+    {% assign my_variable = "Health Potion" %}
+    {{ my_variable | upcase | remove: 'HEALTH' }}
+    {% endraw %}
+Output:
+    {% assign my_variable = "Health Potion" %}
+    {{ my_variable | upcase | remove: 'HEALTH' }}
 
+<a class="btn" href="#filters">Navigate to Filters</a>
 
+### Referencing objects
+
+<ul>
+<li>Lquid objects represent variables that you can use to build your theme. Object types include, but aren't limited to:</li>
+<ul>
+<li>Store resources, such as a collection or product and its properties</li>
+<li>Standart content that is used to power Shopify themes, such as <code>content_for_header</code></li>
+<li>Functional elements that can be used to build interactivity, such as <code>paginate</code> and <code>search</code></li>
+<li>Objects might represent a single data point, or contain multiple properties. Some products might represent a related object, such as a product in collection</li>
+<code><b>{% raw %}{{  }}{% endraw %} -></b> Double curly brace delimiters denote an output.</code>
+</ul></ul>
+
+{% raw %}
+```html
+  <div class=”product-page”>
+      <div class=”product-image”>
+        {{ product.featured_image | image_url: width: 400 | image_tag }}
+      </div>
+    <div class=”product-title”>
+      {{ product.title }}
+    </div>
+    <div class=”product-price”>
+      {{ product.price | money }}
+    </div>
+  </div>
+```
+{% endraw %}
+
+Output:
+```html
+<div class=”product-page”>
+  <div class=”product-image”>
+    <img src="//cdn.shopify.com/s/files/1/0561/7470/6753/products/science-beakers-blue-light.jpg?v=1654828801&amp;width=400" alt="Health potion" srcset="//cdn.shopify.com/s/files/1/0561/7470/6753/products/science-beakers-blue-light.jpg?v=1654828801&amp;width=352 352w" width="400" height="267">
+  </div>
+  <div class=”product-title”>
+    Health potion
+  </div>
+  <div class=”product-price”>
+    $10.00
+  </div>
+</div>
+```
+#### Scope
+<li>Some objects can be accessed globally, and some are available only in certain contexts. Refer to the specific object reference to find its access scope.</li>
+
+#### Creating variables
+<li>You can also create your own variables using variable tags. Variables are treated like objects syntactically.</li>
+<br>
+<a class="btn" href="#objects">Navigate to Objects</a>
+
+<span id="basics">
+
+## Basics
+### Object handles
+<li></li>
 
