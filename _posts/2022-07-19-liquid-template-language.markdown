@@ -3,7 +3,11 @@ layout: post
 title: "Liquid Template Language"
 categories: language
 description: "This page a guideline to Liquid Template Language for personal reasons"
-variable: {value: 'test'}
+variable: {
+  value: 'test',
+  value2: 'test2',
+  value3: 'test3'
+}
 
 ---
 <style>
@@ -24,6 +28,21 @@ variable: {value: 'test'}
        
        line-height: 39px; 
        padding: 0;
+    }
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
     }
     .btn:hover{background: transparent;color: #000;text-decoration: none !important;}
     .btn span{position: relative;
@@ -257,4 +276,117 @@ Referencing an object by its handle is similar to <a href="#types">referencing a
   {% endraw %}
 Output =
 <div></div>
-    'Variable' page value: {{ page.variable.value }}
+    'Variable' page value: {{ page['variable'].value }}
+    'Variable' page value2: {{ page['variable'].value2 }}
+
+<span id="#operators">
+### **Logical and comparison operators**
+<li>Liquid supports basic logical and comparison operators for use with <a href="#tags">conditional tags.</a></li>
+<br>
+<table>
+<tr>
+  <th>Operator</th>
+  <th>Function</th>
+</tr>
+<tr>
+  <td>==</td>
+  <td>equals</td>
+</tr>
+<tr>
+  <td>!=</td>
+  <td>does not equal</td>
+</tr>
+<tr>
+  <td>></td>
+  <td>greater than</td>
+</tr>
+<tr>
+  <td><</td>
+  <td>less than</td>
+</tr>
+<tr>
+  <td>>=</td>
+  <td>greater than or equal to</td>
+</tr>
+<tr>
+  <td><=</td>
+  <td>less than or equal to</td>
+</tr>
+<tr>
+  <td>or</td>
+  <td>Condition A or Condition B</td>
+</tr>
+<tr>
+  <td>and</td>
+  <td>Condition A and Condition B</td>
+</tr>
+<tr>
+  <td>contains</td>
+  <td>Checks for strings in strings or arrays</td>
+</tr>
+</table>
+
+####  ***contains***
+<li>You can use <code>contains</code> to check for the presence of a string within an array, or another string. You can't use <code>contains</code> to check for an object in an array of objects.</li>
+
+  {% raw %}
+    {% if page.variable contains 'value3' %}
+      This potion contains restorative properties.
+    {% endif %}
+  {% endraw %}
+Output = 
+
+<div></div>
+  {% if page.variable contains 'value3' %}
+    This potion contains restorative properties.
+  {% else %}
+    Fuck You
+  {% endif %}
+if contains key not key value.
+
+####  **Order of operations**
+When using more than one operator in a tag, the operators are evaluated from right to left, and you can't change this order.
+<li style='color:#ebaf26;list-style: none; font-size:20px;font-weight:600'>**Caution**</li>
+<li style = 'color:#ebaf26;'>Parentheses<code>()</code> aren't valid characters within Liquid tags. If you try to include them to group operators, then your tag won't be rendered.</li>
+  {% raw %}
+    {% unless true and false and false or true %}
+      This evaluates to false, since Liquid checks tags like this:
+
+      true and (false and (false or true))
+      true and (false and true)
+      true and false
+      false
+    {% endunless %}
+  {% endraw %}
+Output =
+<div></div>
+  {% unless true and false and false or true %}
+    This evaluates to false, since Liquid checks tags like this:
+
+      true and (false and (false or true))
+      true and (false and true)
+      true and false
+      false
+  {% endunless %}
+
+  
+<span id="#types">
+### **Types**
+<li>Liquid output can be one of six data types.</li>
+#### **string**
+<li>Any series of characters, wrapped in sinle or double quotes.</li>
+<span class="Vsw2a _22j2f" aria-label="Info Icon" role="img"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="_2ak-2" focusable="false" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M0 12C0 13.1046 0.895431 14 2 14H12C13.1046 14 14 13.1046 14 12V2C14 0.895431 13.1046 0 12 0H2C0.89543 0 0 0.895431 0 2V12ZM6 4C6 3.44772 6.44772 3 7 3C7.55228 3 8 3.44772 8 4C8 4.55228 7.55228 5 7 5C6.44772 5 6 4.55228 6 4ZM7.5 6C7.77614 6 8 6.22386 8 6.5V9.5C8 9.77614 8.22386 10 8.5 10C8.77614 10 9 10.2239 9 10.5C9 10.7761 8.77614 11 8.5 11H8H6H5.5C5.22386 11 5 10.7761 5 10.5C5 10.2239 5.22386 10 5.5 10C5.77614 10 6 9.77614 6 9.5V7.5C6 7.22386 5.77614 7 5.5 7C5.22386 7 5 6.77614 5 6.5C5 6.22386 5.22386 6 5.5 6H7.5Z" fill="#6055FF"></path></svg></span><text style="color:#7770ff;font-weight:600;"> Tip</text>
+<li style="list-style: none; color:#7770ff;">You can check whether a string is empty with the <code>blank</code> object.</li>
+
+#### **number**
+<li>Numeric values, including floats and integers.</li>
+
+#### **boolean**
+<li>A binary value, either <code>true</code> or <code>false</code></li>
+
+#### **nil**
+<li>An undefned value.</li>
+<li>Tags or outputs that return <code>nil</code> don't prnt anything to the page. They are also treated as <code>false</code>
+<span class="note-up">★·.·´¯\`·.·★ ɴᴏᴛᴇ★·.·´¯\`·.·★</span>
+A string with the characters "nil" is not treated as the same as <code>nil</code>
+<hr/>
